@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Resume {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  basics    Basics?
+  jobs      Job[]
+  work      Work[]
+}
+
+model Work {
+  id          String   @id @default(cuid())
+  company     String
+  url         String   @default("")
+  position    String   @default("")
+  description String   @default("")
+  startMonth  Int      @default(0)
+  startYear   Int      @default(0)
+  endMonth    Int      @default(0)
+  endYear     Int      @default(0)
+  current     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  resumeId    String
+  resume          Resume              @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  jobDescriptions WorkJobDescription[]
+}
+
+model WorkJobDescription {
+  id          String   @id @default(cuid())
+  description String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  workId      String
+  work        Work     @relation(fields: [workId], references: [id], onDelete: Cascade)
+  jobId       String
+  job         Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([workId, jobId])
+}
+
+model Job {
+  id        String    @id @default(cuid())
+  title     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  resumeId  String
+  resume           Resume              @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  postings         Posting[]
+  workDescriptions WorkJobDescription[]
+}
+
+model Posting {
+  id               String   @id @default(cuid())
+  title            String
+  company          String   @default("")
+  url              String   @default("")
+  description      String   @default("")
+  responsibilities String   @default("")
+  skills           String   @default("")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  jobId            String
+  job              Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+}
+
+model Basics {
+  id       String  @id @default(cuid())
+  name     String  @default("")
+  label    String  @default("")
+  image    String  @default("")
+  email    String  @default("")
+  phone    String  @default("")
+  url      String  @default("")
+  summary  String  @default("")
+  resumeId String  @unique
+  resume   Resume  @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  location Location?
+  profiles Profile[]
+}
+
+model Location {
+  id          String @id @default(cuid())
+  address     String @default("")
+  postalCode  String @default("")
+  city        String @default("")
+  countryCode String @default("")
+  region      String @default("")
+  basicsId    String @unique
+  basics      Basics @relation(fields: [basicsId], references: [id], onDelete: Cascade)
+}
+
+model Profile {
+  id       String @id @default(cuid())
+  network  String @default("")
+  username String @default("")
+  url      String @default("")
+  basicsId String
+  basics   Basics @relation(fields: [basicsId], references: [id], onDelete: Cascade)
+}
