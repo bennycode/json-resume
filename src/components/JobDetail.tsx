@@ -236,6 +236,7 @@ export default function JobDetail({ jobId }: { jobId: string }) {
   };
 
   const handleDeletePosting = async (id: string) => {
+    if (!confirm("Delete this posting?")) return;
     setJob((prev) => {
       if (!prev) return prev;
       return {

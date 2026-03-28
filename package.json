@@ -13,11 +13,14 @@
     "@prisma/adapter-libsql": "^7.6.0",
     "@prisma/client": "^7.6.0",
     "@tailwindcss/typography": "^0.5.19",
+    "jsonresume-theme-even": "^0.26.1",
     "next": "16.2.1",
+    "puppeteer": "^24.40.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-markdown": "^10.1.0",
     "react-select": "^5.10.2",
+    "resumed": "^6.1.0",
     "use-local-storage-state": "^19.5.0"
   },
   "devDependencies": {

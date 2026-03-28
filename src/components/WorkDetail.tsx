@@ -290,6 +290,7 @@ export default function WorkDetail({ workId }: { workId: string }) {
   };
 
   const handleDeleteJobDesc = async (id: string) => {
+    if (!confirm("Remove this targeted description?")) return;
     setJobDescriptions((prev) => prev.filter((d) => d.id !== id));
     await fetch(`/api/work-descriptions/${id}`, { method: "DELETE" });
   };

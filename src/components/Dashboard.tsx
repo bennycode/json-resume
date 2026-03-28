@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
+import GenerateCVDialog from "./GenerateCVDialog";
 
 interface Job {
   id: string;
@@ -102,6 +103,7 @@ export default function Dashboard({ userName }: { userName: string }) {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [work, setWork] = useState<WorkEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showGenerateCV, setShowGenerateCV] = useState(false);
 
   const loadData = useCallback(async () => {
     const [jobsRes, workRes] = await Promise.all([
@@ -129,6 +131,7 @@ export default function Dashboard({ userName }: { userName: string }) {
   const handleDeleteJob = async (e: React.MouseEvent, id: string) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!confirm("Delete this job and all its postings?")) return;
     setJobs((prev) => prev.filter((j) => j.id !== id));
     await fetch(`/api/jobs/${id}`, { method: "DELETE" });
   };
@@ -145,6 +148,7 @@ export default function Dashboard({ userName }: { userName: string }) {
   const handleDeleteWork = async (e: React.MouseEvent, id: string) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!confirm("Delete this work experience?")) return;
     setWork((prev) => prev.filter((w) => w.id !== id));
     await fetch(`/api/work/${id}`, { method: "DELETE" });
   };
@@ -160,11 +164,21 @@ export default function Dashboard({ userName }: { userName: string }) {
   return (
     <div className="max-w-2xl mx-auto">
       {/* Welcome */}
-      <div className="mb-10">
+      <div className="mb-10 flex items-center justify-between">
         <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
           Welcome, {userName || "there"}
         </h2>
+        <button
+          onClick={() => setShowGenerateCV(true)}
+          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+        >
+          Generate CV
+        </button>
       </div>
+
+      {showGenerateCV && (
+        <GenerateCVDialog onClose={() => setShowGenerateCV(false)} />
+      )}
 
       {/* Work Experience */}
       <section className="mb-10">

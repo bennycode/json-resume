@@ -30,7 +30,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-zinc-50 dark:bg-zinc-950">
         <header className="border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-          <div className="mx-auto max-w-7xl px-6 py-4">
+          <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
             <Link href="/dashboard" className="inline-block">
               <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 Resume Builder
@@ -38,6 +38,12 @@ export default function RootLayout({
               <p className="text-sm text-zinc-500 dark:text-zinc-400">
                 Build your professional profile
               </p>
+            </Link>
+            <Link
+              href="/"
+              className="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
+            >
+              Edit Profile
             </Link>
           </div>
         </header>
